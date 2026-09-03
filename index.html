@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>相場流チャートビューア</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #131722;
+    color: #d1d4dc;
+  }
+  .header {
+    padding: 16px 20px;
+    background: #1a1e29;
+    border-bottom: 1px solid #2a2e39;
+  }
+  .header h1 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+  }
+  select {
+    font-size: 15px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #2a2e39;
+    background: #1a1e29;
+    color: #d1d4dc;
+  }
+  #chart {
+    height: calc(100vh - 90px);
+  }
+  .note {
+    font-size: 11px;
+    color: #787b86;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>相場流チャートビューア(MA5/20/60/100/300)</h1>
+  <select id="symbolSelect" onchange="loadChart()">
+    <option value="TSE:7911">ＴＯＰＰＡＮホールディングス</option>
+    <option value="TSE:9041">近鉄グループＨＬＤＧＳ</option>
+    <option value="TSE:1332">ニッスイ</option>
+    <option value="TSE:5970">ジーテクト</option>
+    <option value="TSE:5332">ＴＯＴＯ</option>
+    <option value="TSE:8079">正栄食品工業</option>
+    <option value="TSE:2730">エディオン</option>
+    <option value="TSE:4718">早稲田アカデミー</option>
+    <option value="TSE:1301">極洋</option>
+    <option value="TSE:2269">明治ホールディングス</option>
+    <option value="TSE:6758">ソニーグループ</option>
+    <option value="TSE:NI225">(参考)日経平均</option>
+  </select>
+  <div class="note">MA300を表示するには、チャートを左方向にスクロール/縮小して十分な日数を読み込ませてください。</div>
+</div>
+
+<div id="chart"></div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+function loadChart() {
+  document.getElementById('chart').innerHTML = '';
+  var symbol = document.getElementById('symbolSelect').value;
+  new TradingView.widget({
+    "container_id": "chart",
+    "autosize": true,
+    "symbol": symbol,
+    "interval": "D",
+    "timezone": "Asia/Tokyo",
+    "theme": "dark",
+    "style": "1",
+    "locale": "ja",
+    "toolbar_bg": "#1a1e29",
+    "enable_publishing": false,
+    "hide_side_toolbar": false,
+    "allow_symbol_change": true,
+    "studies": [
+      { "id": "MASimple@tv-basicstudies", "inputs": { "length": 5 } },
+      { "id": "MASimple@tv-basicstudies", "inputs": { "length": 20 } },
+      { "id": "MASimple@tv-basicstudies", "inputs": { "length": 60 } },
+      { "id": "MASimple@tv-basicstudies", "inputs": { "length": 100 } },
+      { "id": "MASimple@tv-basicstudies", "inputs": { "length": 300 } }
+    ]
+  });
+}
+window.onload = loadChart;
+</script>
+
+</body>
+</html>
